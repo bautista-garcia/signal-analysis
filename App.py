@@ -4,8 +4,7 @@ import matplotlib.pyplot as plt
 from Signal import Signal
 from Plot import Plot
 from Transform import Transform
-
-
+from ConvolucionCircular import ConvolucionCircular
 class App:
     def __init__(self):
         self.signal = None
@@ -14,28 +13,37 @@ class App:
     
     def run(self):
         """Main entry point for the application."""
-        # Define time domain values
-        t_values = np.linspace(0.0, 1.0, 500)
+        # # Define time domain values
+        # t_values = np.linspace(0.0, 1.0, 500)
 
-        # Get the function from user input
-        user_function = input("Enter your signal function (use 't' as the variable): ")
+        # # Get the function from user input
+        # user_function = input("Enter your signal function (use 't' as the variable): ")
 
-        # Parse the user input to replace common expressions (optional)
-        user_function = self.preprocess_input(user_function)
+        # # Parse the user input to replace common expressions (optional)
+        # user_function = self.preprocess_input(user_function)
 
-        # Evaluate the function safely using eval()
-        signal_function = self.create_signal_function(user_function)
+        # # Evaluate the function safely using eval()
+        # signal_function = self.create_signal_function(user_function)
 
-        # Create a signal using the user-defined function
-        self.signal = Signal(t_values, signal_function, complex_signal=True)
+        # # Create a signal using the user-defined function
+        # self.signal = Signal(t_values, signal_function, complex_signal=True)
 
-        # Plot the signal
-        self.plot = Plot(self.signal)
-        self.plot.plot_complex()
+        # # Plot the signal
+        # self.plot = Plot(self.signal)
+        # self.plot.plot_complex()
 
-        # Perform Fourier Transform and plot the results
-        self.transform = Transform(self.signal)
-        self.transform.plot_fourier()
+        # # Perform Fourier Transform and plot the results
+        # self.transform = Transform(self.signal)
+        # self.transform.plot_fourier()
+
+        def func1(s):
+            return np.where(np.abs(2 * s) <= 0.5, 1, 0) 
+
+        def func2(s, shift):
+            return np.where(np.abs(2 * (s - shift)) <= 0.5, 1, 0)  # Segunda función desplazada
+
+        conv = ConvolucionCircular(func1=func1, func2=func2)
+        conv.show()
 
     def preprocess_input(self, user_function):
         """Preprocess the user input to replace regular expressions."""
